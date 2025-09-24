@@ -1,14 +1,16 @@
-ï»¿# Alt Platform Monorepo
+# Alt Platform Monorepo
 
-Monorepo pnpm + Turborepo combinant une application React (Vite) et une API NestJS, avec configuration partagÃ©e, CI/CD et outillage DevOps prÃªt pour la prÃ©-production.
+Monorepo pnpm + Turborepo combinant une application React (Vite) et une API NestJS, avec configuration partagée, CI/CD et outillage DevOps prêts pour la pré-production. La pile de données repose désormais sur PostgreSQL.
 
-## PrÃ©requis
+## Prérequis
+
 - Node.js 20
 - pnpm 10.7+
 - Docker & Docker Compose
-- Firebase CLI (optionnel pour gÃ©rer manuellement les Ã©mulateurs)
+- (Optionnel) psql ou un client Postgres pour inspecter la base
 
 ## Installation
+
 ```bash
 pnpm install
 ```
@@ -16,30 +18,30 @@ pnpm install
 ## Variables d'environnement
 
 ### Front (`apps/web/.env`)
+
 ```env
 VITE_API_BASE_URL=http://localhost:3000
-VITE_FIREBASE_API_KEY=demo-api-key
-VITE_FIREBASE_AUTH_DOMAIN=localhost
-VITE_FIREBASE_PROJECT_ID=alt-platform-dev
-VITE_FIREBASE_STORAGE_BUCKET=alt-platform-dev.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=0000000000
-VITE_FIREBASE_APP_ID=1:0000000000:web:demo
-VITE_FIREBASE_EMULATORS=true
 ```
 
 ### API (`apps/api/.env`)
+
 ```env
+NODE_ENV=development
 PORT=3000
-FIREBASE_PROJECT_ID=alt-platform-dev
-FIREBASE_CLIENT_EMAIL=firebase-adminsdk@alt-platform-dev.iam.gserviceaccount.com
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nFAKEKEY\\n-----END PRIVATE KEY-----\\n"
-FIREBASE_EMULATORS=true
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=root
+DATABASE_PASSWORD=zDb1kpvxpj0xTAfDflTk8k4B
+DATABASE_NAME=networking-database
 ```
+
+> Lors d'un démarrage via `docker compose`, ces variables sont surchargées pour pointer vers le conteneur Postgres (`DATABASE_HOST=postgres`).
 
 Ajoutez vos secrets dans GitHub Actions (`REGISTRY`, `REGISTRY_USER`, `REGISTRY_TOKEN`, `ACME_EMAIL`) pour la publication d'images.
 
-## DÃ©marrage local
-1. Lancer les Ã©mulateurs Firebase et le mode watch :
+## Démarrage local
+
+1. Lancer Postgres et le mode watch :
    ```bash
    make dev
    ```
@@ -48,24 +50,29 @@ Ajoutez vos secrets dans GitHub Actions (`REGISTRY`, `REGISTRY_USER`, `REGISTRY_
    - Front : `http://localhost:5173`
 
 ## Commandes utiles
+
 ```bash
 pnpm dev          # Turbo dev (web + api)
 pnpm lint         # ESLint monorepo
 pnpm test         # Vitest + Jest
 pnpm build        # Builds web + api
-docker compose up -d # Traefik + API + Web + Firebase emulators
+pnpm --filter api migration:run   # Applique les migrations TypeORM
+docker compose up -d # Traefik + API + Web + Postgres
 make build-images    # Build local Docker images
 ```
 
-## Seed de donnÃ©es
+## Seed de données
+
 ```bash
 pnpm --filter api seed
 ```
-Le script insÃ¨re 5 Ã©tudiants, 3 entreprises et 6 offres d'alternance dans Firestore.
 
-## DÃ©ploiement (VPS / Traefik)
-1. DÃ©finir `REGISTRY`, `REGISTRY_USER`, `REGISTRY_TOKEN`, `ACME_EMAIL` dans les secrets GitHub.
-2. Sur le serveur, rÃ©cupÃ©rer les images buildÃ©es (`docker compose pull`).
+Le script insère 5 étudiants, 3 entreprises et 6 offres d'alternance dans PostgreSQL.
+
+## Déploiement (VPS / Traefik)
+
+1. Définir `REGISTRY`, `REGISTRY_USER`, `REGISTRY_TOKEN`, `ACME_EMAIL` dans les secrets GitHub.
+2. Sur le serveur, récupérer les images buildées (`docker compose pull`).
 3. Lancer l'infrastructure :
    ```bash
    docker compose up -d
@@ -73,42 +80,73 @@ Le script insÃ¨re 5 Ã©tudiants, 3 entreprises et 6 offres d'alternance dans Fire
 4. Traefik route les domaines `app.localhost` et `api.localhost` vers les services correspondants (adapter selon votre DNS).
 
 ## Notes
-- ESLint, Prettier, Tailwind partagÃ©s dans `packages/config`.
+
+- ESLint, Prettier, Tailwind partagés dans `packages/config`.
 - UI librairie Tailwind dans `packages/ui`.
-- Auth Firebase (email + Google) avec session httpOnly via `/auth/session`.
-- Tests : Vitest + Testing Library cÃ´tÃ© web, Jest + Supertest cÃ´tÃ© API.
+- Authentification désormais gérée par l'API (Postgres) plutôt que Firebase.
+- Tests : Vitest + Testing Library côté web, Jest + Supertest côté API.
 
+## Lancer projet
 
+### Voir l'état
 
-
-## lancer projet 
-# Voir lâ€™Ã©tat
+```bash
 docker compose ps
+```
 
-# Logs dâ€™un service
+### Logs d'un service
+
+```bash
 docker compose logs -f api
 docker compose logs -f web
-docker compose logs -f firebase-emulators
+docker compose logs -f postgres
+```
 
-# RedÃ©marrer un service
+### Redémarrer un service
+
+```bash
 docker compose up -d --force-recreate api
+```
 
-# Tout arrÃªter et supprimer
+### Tout arrêter et supprimer
+
+```bash
 docker compose down
+```
 
-# web
+### web
+
+```bash
 docker compose build web
 docker compose up -d --force-recreate web
+```
 
-# (optionnel) repartir propre
+### (optionnel) repartir propre
+
+```bash
 docker compose down
+```
 
-# construire uniquement ce qui a un Dockerfile (web/api/firebase-emulators)
-docker compose build firebase-emulators api web
+### construire uniquement ce qui a un Dockerfile (web/api)
 
-# dÃ©marrer Traefik + Firebase + API + Web (prod)
-docker compose up -d traefik firebase-emulators api web
+```bash
+docker compose build api web
+```
 
-# suivre les logs (Ctrl+C pour quitter)
-docker compose logs -f traefik api web firebase-emulators
+### démarrer Traefik + Postgres + API + Web (prod)
 
+```bash
+docker compose up -d traefik postgres api web
+```
+
+### suivre les logs (Ctrl+C pour quitter)
+
+```bash
+docker compose logs -f traefik api web postgres
+```
+
+## Inscription utilisateurs
+
+- Front : formulaire disponible sur `/register` (TanStack Router) avec validation forte via Zod et react-hook-form.
+- API : endpoint `POST /auth/register` (NestJS) qui chiffre les mots de passe avec Argon2id avant stockage et refuse les doublons.
+- Les mots de passe ne sont jamais renvoyés par l'API ni stockés en clair; pensez à activer HTTPS et à définir des secrets forts en production.

@@ -1,8 +1,0 @@
-FROM node:20-alpine
-# Java requis par Firestore emulator
-RUN apk add --no-cache openjdk17-jre-headless
-RUN npm i -g firebase-tools
-WORKDIR /app
-EXPOSE 4000 8080 9099 9199
-# le binding IP/ports se fait via firebase.json
-CMD ["firebase","emulators:start","--only","auth,firestore,storage","--project=alt-platform-dev"]

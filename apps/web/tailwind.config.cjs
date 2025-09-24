@@ -1,9 +1,6 @@
-﻿const sharedConfig = require("@alt-platform/config/tailwind");
+﻿const sharedConfig = require('@alt-platform/config/tailwind');
 
 module.exports = {
   ...sharedConfig,
-  content: [
-    "./index.html",
-    "./src/**/*.{ts,tsx}"
-  ]
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
 };

@@ -1,45 +1,29 @@
-﻿import {
-  Router,
-  RootRoute,
-  Route,
-  createBrowserHistory,
-} from '@tanstack/react-router'
-import { QueryClient } from '@tanstack/react-query'
+import { Router, RootRoute, Route, createBrowserHistory } from '@tanstack/react-router';
+import { QueryClient } from '@tanstack/react-query';
 
-import { Layout } from '../components/Layout'
-import { HomePage } from '../pages/Home'
-import { StudentProfilePage } from '../pages/StudentProfile'
-import { CompanyProfilePage } from '../pages/CompanyProfile'
+import { Layout } from '../components/Layout';
+import { HomePage } from '../pages/Home';
+import { RegisterPage } from '../pages/Register';
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient();
 
 const rootRoute = new RootRoute({
   component: Layout,
-})
+});
 
 const homeRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/',
   component: HomePage,
-})
+});
 
-const studentRoute = new Route({
+const registerRoute = new Route({
   getParentRoute: () => rootRoute,
-  path: '/students/$studentId',
-  component: StudentProfilePage,
-})
+  path: '/register',
+  component: RegisterPage,
+});
 
-const companyRoute = new Route({
-  getParentRoute: () => rootRoute,
-  path: '/companies/$companyId',
-  component: CompanyProfilePage,
-})
-
-const routeTree = rootRoute.addChildren([
-  homeRoute,
-  studentRoute,
-  companyRoute,
-])
+const routeTree = rootRoute.addChildren([homeRoute, registerRoute]);
 
 export const router = new Router({
   routeTree,
@@ -47,11 +31,11 @@ export const router = new Router({
   context: {
     queryClient,
   },
-})
+});
 
 // typing pour TanStack Router
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }

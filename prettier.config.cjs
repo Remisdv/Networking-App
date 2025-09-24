@@ -1,1 +1,1 @@
-﻿module.exports = require("@alt-platform/config/prettier");
+﻿module.exports = require('@alt-platform/config/prettier');

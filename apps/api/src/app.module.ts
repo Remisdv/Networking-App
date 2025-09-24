@@ -1,16 +1,38 @@
-﻿import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
-import { FirebaseModule } from './config/firebase.module';
-import { FirebaseAuthGuard } from './common/guards/firebase-auth.guard';
-import { AuthModule } from './modules/auth/auth.module';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { CompaniesModule } from './companies/companies.module';
+import { OffersModule } from './offers/offers.module';
+import { StudentsModule } from './students/students.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    FirebaseModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DATABASE_HOST', 'localhost'),
+        port: Number(configService.get<number>('DATABASE_PORT', 5432)),
+        username: configService.get<string>('DATABASE_USER', 'root'),
+        password: configService.get<string>('DATABASE_PASSWORD', 'zDb1kpvxpj0xTAfDflTk8k4B'),
+        database: configService.get<string>('DATABASE_NAME', 'networking-database'),
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
+    }),
+    StudentsModule,
+    CompaniesModule,
+    OffersModule,
     AuthModule,
   ],
-  providers: [{ provide: APP_GUARD, useClass: FirebaseAuthGuard }],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

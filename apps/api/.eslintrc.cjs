@@ -1,9 +1,11 @@
-﻿module.exports = {
+const baseConfig = require.resolve('@alt-platform/config/eslint');
+
+module.exports = {
   root: true,
   parserOptions: {
-    project: ["./tsconfig.json"],
-    tsconfigRootDir: __dirname
+    project: ['./tsconfig.json'],
+    tsconfigRootDir: __dirname,
   },
-  extends: ["@alt-platform/config/eslint"],
-  ignorePatterns: ["dist", "node_modules"],
+  extends: [baseConfig],
+  ignorePatterns: ['dist', 'node_modules'],
 };
