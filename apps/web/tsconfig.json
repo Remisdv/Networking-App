@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../packages/config/tsconfig/base.json",
   "compilerOptions": {
@@ -8,10 +8,9 @@
       "@/*": ["src/*"],
       "@alt-platform/ui": ["../../packages/ui/src"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "noEmit": true
   },
-  "include": ["src", "vite.config.ts", "vitest.config.ts"],
-  "references": [
-    { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["src", "tests", "vite.config.ts", "vitest.config.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

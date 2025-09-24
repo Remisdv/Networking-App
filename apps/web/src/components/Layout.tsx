@@ -1,5 +1,5 @@
-﻿import { Link, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { Link, Outlet } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 export function Layout() {
   return (
@@ -9,17 +9,23 @@ export function Layout() {
           <Link to="/" className="text-lg font-semibold text-primary-600">
             Alt Platform
           </Link>
-          <nav className="text-sm text-slate-600">
-            <Link to="/" className="hover:text-primary-600">Home</Link>
+          <nav className="flex items-center gap-4 text-sm text-slate-600">
+            <Link to="/" className="hover:text-primary-600">
+              Home
+            </Link>
+            <Link to="/register" className="hover:text-primary-600">
+              Creer un compte
+            </Link>
           </nav>
         </div>
       </header>
 
       <main className="mx-auto max-w-6xl px-6 py-8">
-        <Outlet /> {/* <- renders HomePage / other routes */}
+        <Outlet /> {/* <- renders pages */}
       </main>
 
       {import.meta.env.DEV && <TanStackRouterDevtools position="bottom-right" />}
     </div>
-  )
+  );
 }
+

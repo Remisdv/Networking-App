@@ -1,6 +1,6 @@
-﻿.PHONY: dev build-images up logs down
+.PHONY: dev build-images up logs down
 
-DEV_SERVICES = firebase-emulators
+DEV_SERVICES = postgres
 
 dev:
 	docker compose up -d $(DEV_SERVICES)

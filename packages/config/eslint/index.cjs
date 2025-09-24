@@ -1,5 +1,3 @@
-﻿const path = require("path");
-
 module.exports = {
   root: false,
   env: {
@@ -10,8 +8,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
-    sourceType: "module",
-    project: path.resolve(__dirname, "../tsconfig/base.json")
+    sourceType: "module"
   },
   settings: {
     react: {

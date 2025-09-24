@@ -1,29 +1,29 @@
-﻿import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "node:path";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'node:path';
 
 const projectRoot = __dirname;
 
 export default defineConfig({
-  base: "/",
+  base: '/',
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(projectRoot, "src"),
-      "@alt-platform/ui": path.resolve(projectRoot, "../../packages/ui/src"),
-      clsx: path.resolve(projectRoot, "node_modules/clsx"),
+      '@': path.resolve(projectRoot, 'src'),
+      '@alt-platform/ui': path.resolve(projectRoot, '../../packages/ui/src'),
+      clsx: path.resolve(projectRoot, 'node_modules/clsx'),
     },
   },
   optimizeDeps: {
-    include: ["@alt-platform/ui", "clsx"],
+    include: ['@alt-platform/ui', 'clsx'],
   },
   server: {
     host: true,
-    port: 5173,
+    port: Number(process.env.VITE_PORT ?? 5173),
     strictPort: true,
     hmr: {
-      host: "localhost",
-      clientPort: 5173,
+      host: 'localhost',
+      clientPort: Number(process.env.VITE_PORT ?? 5173),
     },
     watch: {
       usePolling: true,
@@ -32,13 +32,13 @@ export default defineConfig({
     fs: {
       allow: [
         path.resolve(projectRoot),
-        path.resolve(projectRoot, ".."),
-        path.resolve(projectRoot, "../../"),
-        path.resolve(projectRoot, "../../packages/ui"),
+        path.resolve(projectRoot, '..'),
+        path.resolve(projectRoot, '../../'),
+        path.resolve(projectRoot, '../../packages/ui'),
       ],
     },
   },
   build: {
-    outDir: "dist",
+    outDir: 'dist',
   },
 });

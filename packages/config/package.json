@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@alt-platform/config",
   "version": "0.0.1",
   "private": true,
@@ -25,5 +25,11 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5"
+  },
+  "exports": {
+    "./eslint": "./eslint/index.cjs",
+    "./prettier": "./prettier/index.cjs",
+    "./tailwind": "./tailwind/index.cjs",
+    "./tsconfig": "./tsconfig/base.json"
   }
 }
