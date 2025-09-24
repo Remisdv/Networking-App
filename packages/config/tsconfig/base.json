@@ -1,0 +1,21 @@
+﻿{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "moduleDetection": "force",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "@alt-platform/ui": ["../ui/src"],
+      "@alt-platform/ui/*": ["../ui/src/*"]
+    },
+    "types": ["node"]
+  },
+  "exclude": ["node_modules", "dist", "build", "coverage"]
+}

@@ -1,0 +1,97 @@
+﻿services:
+  traefik:
+    image: traefik:v2.11
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--api.dashboard=true"
+    ports:
+      - "80:80"
+      - "8081:8080" # dashboard traefik
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - alt-platform
+
+  firebase-emulators:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.firebase
+    ports:
+      - "4000:4000"  # UI
+      - "8080:8080"  # Firestore
+      - "9099:9099"  # Auth
+      - "9199:9199"  # Storage
+    volumes:
+      - ./firebase.json:/app/firebase.json:ro
+      - ./firestore.rules:/app/firestore.rules:ro
+      - ./storage.rules:/app/storage.rules:ro
+      - ./firebase-data:/app/firebase-data
+    environment:
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-alt-platform-dev}
+    networks:
+      - alt-platform
+
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.api
+    depends_on:
+      - firebase-emulators
+    env_file:
+      - apps/api/.env
+    environment:
+      NODE_ENV: production
+    ports:
+      - "3000:3000" # acces direct Swagger
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alt-api.rule=Host(`api.localhost`)"
+      - "traefik.http.routers.alt-api.entrypoints=web"
+      - "traefik.http.services.alt-api.loadbalancer.server.port=3000"
+    networks:
+      - alt-platform
+
+  web:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.web
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: production
+    ports:
+      - "8085:80" # acces direct front
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alt-web.rule=Host(`app.localhost`)"
+      - "traefik.http.routers.alt-web.entrypoints=web"
+    networks:
+      - alt-platform
+
+  web-dev:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.web.dev
+    # Monter le code pour le hot reload
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/web/node_modules
+      - /app/packages/ui/node_modules
+
+    ports:
+      - "5173:5173"
+    environment:
+      NODE_ENV: development
+      VITE_API_BASE_URL: "http://localhost:3000"
+      CHOKIDAR_USEPOLLING: "true"   # <—
+      WATCHPACK_POLLING: "true"     # <— utile pour libs outillées
+    # dépendance utile si tu veux être sûr que l'API soit up avant
+    depends_on:
+      - api
+
+networks:
+  alt-platform:
+    driver: bridge

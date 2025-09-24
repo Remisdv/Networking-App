@@ -1,0 +1,27 @@
+﻿# Dev server Vite (hot reload)
+FROM node:20-alpine
+
+WORKDIR /app
+
+# pnpm
+RUN apk add --no-cache libc6-compat \
+  && corepack enable \
+  && corepack prepare pnpm@10.7.1 --activate
+
+# Copie des manifests pour profiter du cache d'install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY packages ./packages
+COPY apps/web/package.json ./apps/web/package.json
+COPY apps/api/package.json ./apps/api/package.json
+
+# Install workspace dependencies
+RUN pnpm install --frozen-lockfile
+
+# On travaillera dans /app/apps/web
+WORKDIR /app/apps/web
+
+# Exposer le port Vite
+EXPOSE 5173
+
+# Vite doit écouter sur 0.0.0.0 pour être joignable depuis l'hôte
+CMD ["pnpm", "dev", "--host", "0.0.0.0"]

@@ -1,0 +1,13 @@
+﻿node_modules/
+.pnpm-store/
+dist/
+build/
+coverage/
+.env
+.env.*
+*.local
+.turbo/
+.vscode/
+.DS_Store
+firebase-debug.log
+firebase-data/

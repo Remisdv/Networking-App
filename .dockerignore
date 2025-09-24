@@ -1,0 +1,16 @@
+﻿# ne jamais envoyer les deps ni caches
+**/node_modules
+**/.pnpm-store
+**/.turbo
+**/.cache
+
+# sorties de build
+**/dist
+**/build
+**/.next
+
+# VCS / broutilles
+.git
+.gitignore
+*.log
+.DS_Store
