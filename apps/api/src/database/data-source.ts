@@ -3,10 +3,10 @@ import { resolve } from 'path';
 import { DataSource } from 'typeorm';
 
 import { Company } from '../companies/entities/company.entity';
-import { Offer } from '../offers/entities/offer.entity';
-import { Student } from '../students/entities/student.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateUsersTable1727200000000 } from './migrations/1727200000000-CreateUsersTable';
+import { RemoveDuplicateSchoolId1727800000001 } from './migrations/1727800000001-RemoveDuplicateSchoolId';
+import { DropUnusedTablesAndColumns1727800000002 } from './migrations/1727800000002-DropUnusedTablesAndColumns';
 
 config({ path: resolve(__dirname, '../../.env') });
 
@@ -17,8 +17,8 @@ export const dataSource = new DataSource({
   username: process.env.DATABASE_USER ?? 'root',
   password: process.env.DATABASE_PASSWORD ?? 'zDb1kpvxpj0xTAfDflTk8k4B',
   database: process.env.DATABASE_NAME ?? 'networking-database',
-  entities: [Student, Company, Offer, User],
-  migrations: [CreateUsersTable1727200000000],
+  entities: [Company, User],
+  migrations: [CreateUsersTable1727200000000, RemoveDuplicateSchoolId1727800000001, DropUnusedTablesAndColumns1727800000002],
   synchronize: true,
   logging: false,
 });

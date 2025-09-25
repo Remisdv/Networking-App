@@ -1,0 +1,17 @@
+
+LOGOUT POST /auth/logout
+SEND {
+  "Authorization": "Bearer [len 241]",
+  "refreshToken": "[len 241]"
+}
+RECV {
+  "status": 204
+}
+
+REFRESH POST /auth/refresh
+SEND {
+  "refreshToken": "[len 241]"
+}
+RECV {
+  "status": 401
+}

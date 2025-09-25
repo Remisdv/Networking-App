@@ -1,0 +1,8 @@
+
+STATE GET /onboarding/state
+SEND {
+  "Authorization": "Bearer [len 240]"
+}
+RECV {
+  "step": "STEP1"
+}
