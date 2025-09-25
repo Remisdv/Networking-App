@@ -1,0 +1,9 @@
+
+REFRESH POST /auth/refresh
+SEND {
+  "refreshToken": "[len 243]"
+}
+RECV {
+  "tokenType": "Bearer",
+  "hasAccessToken": true
+}

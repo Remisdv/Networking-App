@@ -1,0 +1,18 @@
+ \n REGISTER POST /auth/register
+SEND {
+  "email": "reg_1758824928676@test.dev",
+  "password": "P4ssword_is_Strong!",
+  "firstName": "John",
+  "lastName": "Doe",
+  "acceptTerms": true
+}
+RESPONSE {
+  "user": {
+    "id": "9b4aa8b4-647b-4eb7-ab56-35b7748ace84",
+    "email": "reg_1758824928676@test.dev",
+    "firstName": "John",
+    "lastName": "Doe",
+    "createdAt": "2025-09-25T16:28:48.732Z",
+    "updatedAt": "2025-09-25T16:28:48.732Z"
+  }
+}

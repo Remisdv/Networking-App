@@ -1,0 +1,21 @@
+
+LOGIN POST /auth/login
+SEND {
+  "email": "login_1758824927093@test.dev",
+  "password": "P4ssword_is_Strong!"
+}
+RESPONSE {
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4N2Q1OTM3YS01OWQ2LTQxNzYtYjhkMC03NjJkMzg5ODVjNzEiLCJlbWFpbCI6ImxvZ2luXzE3NTg4MjQ5MjcwOTNAdGVzdC5kZXYiLCJpYXQiOjE3NTg4MjQ5MjcsImV4cCI6MTc1ODgyNTEwN30.uLVkpHd3u1YjRa_zjnG6GGKKz1YvJ0p1V8wJqN821yE",
+  "tokenType": "Bearer",
+  "accessTokenExpiresAt": "2025-09-25T18:31:47.000Z",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4N2Q1OTM3YS01OWQ2LTQxNzYtYjhkMC03NjJkMzg5ODVjNzEiLCJlbWFpbCI6ImxvZ2luXzE3NTg4MjQ5MjcwOTNAdGVzdC5kZXYiLCJpYXQiOjE3NTg4MjQ5MjcsImV4cCI6MTc1OTQyOTcyN30.R69fJ1XkwsvoD5LFLRe_s4-khadYAfD4frxb8mwyfvM",
+  "refreshTokenExpiresAt": "2025-10-02T18:28:47.000Z",
+  "user": {
+    "id": "87d5937a-59d6-4176-b8d0-762d38985c71",
+    "email": "login_1758824927093@test.dev",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "createdAt": "2025-09-25T16:28:47.205Z",
+    "updatedAt": "2025-09-25T16:28:47.205Z"
+  }
+}

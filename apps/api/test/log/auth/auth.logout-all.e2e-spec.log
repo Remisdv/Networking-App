@@ -1,0 +1,16 @@
+
+LOGOUT-ALL POST /auth/logout-all
+SEND {
+  "Authorization": "Bearer [len 247]"
+}
+RECV {
+  "status": 204
+}
+
+REFRESH POST /auth/refresh
+SEND {
+  "refreshToken": "[len 247]"
+}
+RECV {
+  "status": 401
+}

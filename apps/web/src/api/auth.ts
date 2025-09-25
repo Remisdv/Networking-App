@@ -1,26 +1,18 @@
-import { apiClient } from './client';
+import { apiClient, clearAuthSession, saveAuthSession } from './client';
+import type { LoginPayload, LoginResponse, RegisterPayload, RegisterResponse } from './types';
 
-export interface RegisterPayload {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  acceptTerms: boolean;
-}
-
-export interface RegisteredUser {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface RegisterResponse {
-  user: RegisteredUser;
-}
+export { type RegisteredUser } from './types';
 
 export function registerUser(payload: RegisterPayload) {
   return apiClient.post<RegisterResponse, RegisterPayload>('/auth/register', payload);
+}
+
+export async function loginUser(payload: LoginPayload) {
+  const response = await apiClient.post<LoginResponse, LoginPayload>('/auth/login', payload);
+  saveAuthSession(response);
+  return response;
+}
+
+export function logoutUser() {
+  clearAuthSession();
 }

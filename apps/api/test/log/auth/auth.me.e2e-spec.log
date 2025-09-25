@@ -1,0 +1,15 @@
+
+ME GET /auth/me
+SEND {
+  "Authorization": "Bearer [len 236]"
+}
+RECV {
+  "user": {
+    "id": "4d8ee72b-22c9-473d-af6a-60bd89b7ff54",
+    "email": "me_1758824928517@test.dev",
+    "firstName": "Mia",
+    "lastName": "User",
+    "createdAt": "2025-09-25T16:28:48.558Z",
+    "updatedAt": "2025-09-25T16:28:48.609Z"
+  }
+}
