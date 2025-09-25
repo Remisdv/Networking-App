@@ -1,0 +1,100 @@
+
+STEP2 PATCH /onboarding/step2
+SEND {
+  "Authorization": "Bearer [len 240]",
+  "body": {
+    "employment": "APPRENTICE",
+    "company": {
+      "id": "dc1c3e6c-a9b4-4358-8863-328e8db6fa5e"
+    },
+    "startDate": "2024-01-01",
+    "title": "Dev"
+  }
+}
+RECV {
+  "user": {
+    "id": "0ad7b589-1586-4d30-80ca-56cfb3e3554c",
+    "email": "step2_1758824927140@test.dev",
+    "passwordHash": "$argon2id$v=19$m=65536,t=3,p=4$FaLednjzwAKoY6+WayWEhQ$Fc87qXzWvM7z5mJm+Vic8LlV78wtoloRo8RONZ5a4OM",
+    "firstName": "x",
+    "lastName": "y",
+    "termsAcceptedAt": "2025-09-25T18:28:47.299Z",
+    "role": "USER",
+    "onboardingStep": "DONE",
+    "onboardingDoneAt": "2025-09-25T18:28:47.690Z",
+    "lastLoginAt": "2025-09-25T18:28:47.456Z",
+    "onboardingEmployment": "APPRENTICE",
+    "createdAt": "2025-09-25T16:28:47.305Z",
+    "updatedAt": "2025-09-25T16:28:47.693Z"
+  },
+  "currentJob": {
+    "userId": "0ad7b589-1586-4d30-80ca-56cfb3e3554c",
+    "companyId": "dc1c3e6c-a9b4-4358-8863-328e8db6fa5e",
+    "employment": "APPRENTICE",
+    "title": "Dev",
+    "startDate": "2024-01-01",
+    "endDate": null,
+    "id": "00805e5d-6f81-4263-9845-d5326b406729",
+    "createdAt": "2025-09-25T16:28:47.681Z",
+    "updatedAt": "2025-09-25T16:28:47.681Z"
+  }
+}
+
+STATE GET /onboarding/state
+RECV {
+  "step": "DONE",
+  "completedAt": "2025-09-25T18:28:47.690Z"
+}
+
+STEP2 PATCH /onboarding/step2
+SEND {
+  "Authorization": "Bearer [len 240]",
+  "body": {
+    "employment": "STUDENT",
+    "title": "Student"
+  }
+}
+RECV {
+  "user": {
+    "id": "54f3e3bc-890d-402d-8108-af4353f0eef5",
+    "email": "step2_1758824927716@test.dev",
+    "passwordHash": "$argon2id$v=19$m=65536,t=3,p=4$vGcHidTo0Ts0vEt2JVwi5g$WoNJ0zKMrTRhft4gFhyxsdywhVrcvWlGZKUrrkSKmTs",
+    "firstName": "x",
+    "lastName": "y",
+    "termsAcceptedAt": "2025-09-25T18:28:47.858Z",
+    "role": "USER",
+    "onboardingStep": "DONE",
+    "onboardingDoneAt": "2025-09-25T18:28:48.096Z",
+    "lastLoginAt": "2025-09-25T18:28:47.989Z",
+    "onboardingEmployment": "STUDENT",
+    "createdAt": "2025-09-25T16:28:47.861Z",
+    "updatedAt": "2025-09-25T16:28:48.099Z"
+  },
+  "currentJob": {
+    "userId": "54f3e3bc-890d-402d-8108-af4353f0eef5",
+    "companyId": null,
+    "employment": "STUDENT",
+    "title": "Student",
+    "startDate": null,
+    "endDate": null,
+    "id": "45ccda05-2dc7-4f6e-969c-6b20c539c2e5",
+    "createdAt": "2025-09-25T16:28:48.095Z",
+    "updatedAt": "2025-09-25T16:28:48.095Z"
+  }
+}
+
+STEP2 PATCH /onboarding/step2
+SEND {
+  "Authorization": "Bearer [len 240]",
+  "bad": {
+    "employment": "APPRENTICE"
+  }
+}
+RECV {
+  "status": 400,
+  "body": {
+    "message": "COMPANY_REQUIRED",
+    "error": "Bad Request",
+    "statusCode": 400
+  }
+}

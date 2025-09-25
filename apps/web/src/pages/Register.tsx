@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -218,7 +219,13 @@ export function RegisterPage() {
           </div>
         )}
       </form>
+
+      <p className="mt-6 text-sm text-slate-600">
+        Vous avez déjà un compte ?{' '}
+        <Link to="/login" className="font-medium text-primary-600 hover:text-primary-700">
+          Se connecter
+        </Link>
+      </p>
     </div>
   );
 }
-

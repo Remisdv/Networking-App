@@ -4,6 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import * as argon2 from 'argon2';
 import { Repository } from 'typeorm';
 
+import { OnboardingStep } from '../common/enums';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { User } from './entities/user.entity';
@@ -18,17 +19,12 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const normalizedEmail = createUserDto.email;
 
-    const existingUser = await this.usersRepository.findOne({
-      where: { email: normalizedEmail },
-    });
-
+    const existingUser = await this.usersRepository.findOne({ where: { email: normalizedEmail } });
     if (existingUser) {
-      throw new ConflictException('Un compte existe dÈj‡ avec cette adresse e-mail.');
+      throw new ConflictException('Un compte existe d√©j√† avec cette adresse e-mail.');
     }
 
-    const passwordHash = await argon2.hash(createUserDto.password, {
-      type: argon2.argon2id,
-    });
+    const passwordHash = await argon2.hash(createUserDto.password, { type: argon2.argon2id });
 
     const user = this.usersRepository.create({
       email: normalizedEmail,
@@ -36,12 +32,23 @@ export class UsersService {
       firstName: createUserDto.firstName,
       lastName: createUserDto.lastName,
       termsAcceptedAt: new Date(),
+      onboardingStep: OnboardingStep.STEP1,
     });
 
     const savedUser = await this.usersRepository.save(user);
+    return this.toResponseDto(savedUser);
+  }
 
-    return plainToInstance(UserResponseDto, savedUser, {
-      excludeExtraneousValues: false,
-    });
+  findByEmail(email: string): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { email } });
+  }
+
+  findById(id: string): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { id } });
+  }
+
+  toResponseDto(user: User): UserResponseDto {
+    return plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true });
   }
 }
+

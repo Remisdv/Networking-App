@@ -3,6 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 
 import { Layout } from '../components/Layout';
 import { HomePage } from '../pages/Home';
+import { LoginPage } from '../pages/Login';
 import { RegisterPage } from '../pages/Register';
 
 export const queryClient = new QueryClient();
@@ -23,7 +24,13 @@ const registerRoute = new Route({
   component: RegisterPage,
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, registerRoute]);
+const loginRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/login',
+  component: LoginPage,
+});
+
+const routeTree = rootRoute.addChildren([homeRoute, registerRoute, loginRoute]);
 
 export const router = new Router({
   routeTree,

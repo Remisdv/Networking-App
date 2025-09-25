@@ -1,13 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-
-import { Offer } from '../../offers/entities/offer.entity';
+import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('companies')
 export class Company {
@@ -17,20 +8,35 @@ export class Company {
   @Column()
   name!: string;
 
-  @Column({ name: 'logo_url', nullable: true })
+  @Index('companies_siren_unique', { unique: true })
+  @Column({ type: 'varchar', nullable: true })
+  siren?: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  ape?: string | null;
+
+  @Column({ name: 'logo_url', type: 'varchar', nullable: true })
   logoUrl?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   website?: string;
 
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @Column({ nullable: true })
-  location?: string;
+  @Column({ type: 'varchar', nullable: true })
+  city?: string;
 
-  @OneToMany(() => Offer, (offer) => offer.company, { cascade: true })
-  offers?: Offer[];
+  @Column({ type: 'varchar', nullable: true })
+  region?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  country?: string;
+
+  @Column({ default: false })
+  verified!: boolean;
+
+  // Offers removed in current scope
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;

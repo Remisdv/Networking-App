@@ -1,16 +1,29 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "../../packages/config/tsconfig/base.json",
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"],
-      "@alt-platform/ui": ["../../packages/ui/src"]
-    },
-    "types": ["vite/client"],
-    "noEmit": true
-  },
-  "include": ["src", "tests", "vite.config.ts", "vitest.config.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+    "$schema":  "https://json.schemastore.org/tsconfig",
+    "extends":  "../../packages/config/tsconfig/base.json",
+    "compilerOptions":  {
+                            "jsx":  "react-jsx",
+                            "baseUrl":  "./",
+                            "paths":  {
+                                          "@/*":  [
+                                                      "src/*"
+                                                  ],
+                                          "@alt-platform/ui":  [
+                                                                   "../../packages/ui/src"
+                                                               ]
+                                      },
+                            "types":  [
+                                          "vite/client"
+                                      ],
+                            "noEmit":  true
+                        },
+    "include":  [
+                    "src",
+                    "tests"
+                ],
+    "references":  [
+                       {
+                           "path":  "./tsconfig.node.json"
+                       }
+                   ]
 }

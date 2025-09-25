@@ -1,0 +1,89 @@
+
+STEP1 PATCH /onboarding/step1
+SEND {
+  "Authorization": "Bearer [len 240]",
+  "body": {
+    "firstName": "Johnny",
+    "lastName": "Bravo",
+    "employment": "APPRENTICE",
+    "contacts": [
+      {
+        "label": "Email",
+        "type": "email",
+        "value": "step1_1758824926946@test.dev"
+      },
+      {
+        "label": "LinkedIn",
+        "type": "linkedin",
+        "value": "https://www.linkedin.com/in/example"
+      }
+    ]
+  }
+}
+RECV {
+  "user": {
+    "id": "8cabecb3-cac9-4408-b469-f86acfc39023",
+    "email": "step1_1758824926946@test.dev",
+    "passwordHash": "$argon2id$v=19$m=65536,t=3,p=4$06AmnWZNOwf8tmY2fIAIrg$/IBld48PiTxuPPU/zKcE7eISQh3cagM5d8RvoDqmlCE",
+    "firstName": "Johnny",
+    "lastName": "Bravo",
+    "termsAcceptedAt": "2025-09-25T18:28:47.078Z",
+    "role": "USER",
+    "onboardingStep": "STEP2",
+    "onboardingDoneAt": null,
+    "lastLoginAt": "2025-09-25T18:28:47.236Z",
+    "onboardingEmployment": "APPRENTICE",
+    "createdAt": "2025-09-25T16:28:47.082Z",
+    "updatedAt": "2025-09-25T16:28:47.480Z"
+  }
+}
+
+STEP1 PATCH /onboarding/step1
+SEND {
+  "Authorization": "Bearer [len 240]",
+  "tooMany": {
+    "firstName": "A",
+    "lastName": "B",
+    "employment": "STUDENT",
+    "contacts": [
+      {
+        "label": "c1",
+        "type": "email",
+        "value": "a@a.com"
+      },
+      {
+        "label": "c2",
+        "type": "linkedin",
+        "value": "https://lnkd.in/c2"
+      },
+      {
+        "label": "c3",
+        "type": "url",
+        "value": "https://a.com"
+      },
+      {
+        "label": "c4",
+        "type": "other",
+        "value": "x"
+      },
+      {
+        "label": "c5",
+        "type": "other",
+        "value": "y"
+      },
+      {
+        "label": "c6",
+        "type": "other",
+        "value": "z"
+      }
+    ]
+  }
+}
+RECV {
+  "status": 400,
+  "body": {
+    "message": "TOO_MANY_CONTACTS",
+    "error": "Bad Request",
+    "statusCode": 400
+  }
+}
